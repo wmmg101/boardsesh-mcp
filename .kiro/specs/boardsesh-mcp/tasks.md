@@ -8,9 +8,10 @@
 - [x] 6. Tests: config, models, grades, analytics, client, auth, server, --check (94)
 - [x] 7. README (no-password setup first), CONTRIBUTING, CHANGELOG, server.json, CI, release
 - [x] 8. Verify end to end against a real public logbook
-- [ ] 9. Verify with the user's own Boardsesh account (`--check`, then from Kiro)
-- [ ] 10. docs/clients.md for other MCP clients
-- [ ] 11. Create the GitHub repo, PyPI Trusted Publishing, release 0.1.0, MCP registry
+- [x] 9. Verified against the user's account: resolves, but the logbook is empty (no board
+      account linked in Boardsesh yet). Empty-logbook path now explains itself.
+- [x] 10. docs/clients.md for other MCP clients
+- [x] 11. Public repo, PyPI 0.1.0 via trusted publishing, MCP registry, rulesets, scanning
 - [ ] 12. Reply in boardsesh/boardsesh discussion #5525: announce, ask about bearer auth for the
       heatmap route, offer to contribute in-tree if they would prefer that
 - [ ] 13. (later) reconstruct personal hold usage from the logbook if the heatmap stays cookie-only

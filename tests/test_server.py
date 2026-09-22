@@ -398,3 +398,39 @@ def test_main_version_and_help(capsys):
     main(["--help"])
     help_text = capsys.readouterr().out
     assert "BOARDSESH_USER" in help_text and "--check" in help_text
+
+
+# -- empty logbook (the new-user path) -----------------------------------------------------------
+
+
+async def test_empty_logbook_explains_itself(fake: FakeBoardsesh, settings: Settings):
+    """A Boardsesh account with no linked board syncs nothing; zeros must not look like history."""
+    fake.feed = []
+    server = create_server(_service(fake, settings))
+    async with Client(server) as client:
+        for tool in sorted(PUBLIC_TOOLS - {"boardsesh_get_grades"}):
+            res = _payload(await client.call_tool(tool, {}))
+            assert res["total_entries"] == 0, tool
+            note = res["empty_logbook_note"]
+            assert "link their board account" in note, tool
+            assert "Do not present the zeros" in note, tool
+
+
+async def test_empty_logbook_totals_are_zero_not_errors(fake: FakeBoardsesh, settings: Settings):
+    fake.feed = []
+    server = create_server(_service(fake, settings))
+    async with Client(server) as client:
+        summary = _payload(await client.call_tool("boardsesh_get_summary", {}))
+        boards = _payload(await client.call_tool("boardsesh_compare_boards", {}))
+        pyramid = _payload(await client.call_tool("boardsesh_get_grade_pyramid", {}))
+    assert summary["sends"] == 0 and summary["boards"] == []
+    assert summary["hardest_send"]["grade"] is None
+    assert summary["session_count"] == 0
+    assert boards["boards"] == []
+    assert pyramid["total_sends"] == 0 and pyramid["levels"] == []
+
+
+async def test_populated_logbook_has_no_empty_note(server):
+    async with Client(server) as client:
+        res = _payload(await client.call_tool("boardsesh_get_summary", {}))
+    assert "empty_logbook_note" not in res

@@ -29,6 +29,17 @@ from boardsesh_mcp.models import Ascent
 
 READ_ONLY = ToolAnnotations(read_only_hint=True, destructive_hint=False, open_world_hint=True)
 
+# Shown when Boardsesh has no ticks for the configured user. Usually means the account exists but
+# no board account is linked yet, so there is nothing to sync; without this the agent just reports
+# zeros and cannot tell the user what to do about it.
+EMPTY_LOGBOOK_NOTE = (
+    "Boardsesh has no logged climbs for this user, so every total is zero. Either the display "
+    "name in BOARDSESH_USER belongs to a different Boardsesh account, or the account has no "
+    "climbs yet: Boardsesh fills the logbook by syncing a linked board account (Kilter, Tension, "
+    "...) or from climbs logged in Boardsesh itself. Tell the user to link their board account in "
+    "Boardsesh, then try again. Do not present the zeros as a real training history."
+)
+
 # One question usually fans out into several tool calls; serve them from one logbook fetch.
 LOGBOOK_CACHE_TTL_SECONDS = 60.0
 # How much history to pull for whole-logbook analytics (feed pages are capped at 50 upstream).
@@ -169,6 +180,8 @@ class BoardseshService:
         out: dict[str, Any] = {"timezone": self.tz_name}
         if total is not None:
             out["total_entries"] = total
+            if total == 0:
+                out["empty_logbook_note"] = EMPTY_LOGBOOK_NOTE
         out.update(body)
         return out
 

@@ -1,0 +1,16 @@
+name: Feature request
+description: A question you'd like to ask the agent that it can't answer today
+labels: [enhancement]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What would you ask the agent?
+      description: Phrase it the way you'd type it, e.g. "which holds do I avoid at 40°?"
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Where would the answer come from?
+      description: If you know the Boardsesh query or screen that shows this, mention it. boardsesh-mcp only sends a fixed set of read queries, so new data means a new one.

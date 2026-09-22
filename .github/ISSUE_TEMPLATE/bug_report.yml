@@ -1,0 +1,41 @@
+name: Bug report
+description: Something doesn't work, or a number looks wrong
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before you paste anything:** never include your Boardsesh password, tokens or a full
+        config containing credentials. Replace secrets with `***`. If you already pasted one,
+        edit it out and change your Boardsesh password.
+
+        Security problems should be reported privately instead:
+        https://github.com/wmmg101/boardsesh-mcp/security/advisories/new
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you ask the agent, and what came back? If a number is wrong, what does Boardsesh show instead?
+    validations:
+      required: true
+  - type: textarea
+    id: check
+    attributes:
+      label: Output of `uvx boardsesh-mcp --check`
+      description: Run it with the same BOARDSESH_* variables set. It prints only counts and your display name, so it is safe to paste.
+      render: text
+  - type: input
+    id: client
+    attributes:
+      label: MCP client and version
+      placeholder: Kiro 1.x / Claude Code 2.x / Cursor ...
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 15 / Windows 11 / Ubuntu 24.04
+  - type: input
+    id: boards
+    attributes:
+      label: Which boards are in your Boardsesh logbook?
+      placeholder: kilter + tension

@@ -152,7 +152,8 @@ is the better choice if you use more than one board, because it can compare them
 
 ## Contributing
 
-Issues and pull requests welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+Issues and pull requests welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Security reports go
+through [SECURITY.md](SECURITY.md).
 
 ## License
 

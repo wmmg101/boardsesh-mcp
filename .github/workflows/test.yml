@@ -1,0 +1,56 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.12", "3.14"]
+        include:
+          - os: macos-latest
+            python-version: "3.12"
+          - os: windows-latest
+            python-version: "3.12"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Sync
+        run: uv sync --python ${{ matrix.python-version }} --locked
+      - name: Ruff
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+      - name: Pytest (no Boardsesh account needed; integration tests are skipped)
+        run: uv run pytest
+      - name: Build wheel and sdist
+        run: uv build
+      - name: Smoke-test the console script
+        run: |
+          uv run boardsesh-mcp --version
+          uv run boardsesh-mcp --help
+
+  # Single required status check for branch protection, regardless of matrix shape.
+  ci:
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: All jobs passed
+        run: |
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "test matrix result: ${{ needs.test.result }}" >&2
+            exit 1
+          fi

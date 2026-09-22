@@ -1,0 +1,53 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.wmmg101/boardsesh-mcp",
+  "title": "Boardsesh Climbing Logbook",
+  "description": "Read-only access to your Boardsesh logbook across Kilter, Tension, MoonBoard and more",
+  "websiteUrl": "https://github.com/wmmg101/boardsesh-mcp",
+  "repository": {
+    "url": "https://github.com/wmmg101/boardsesh-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "boardsesh-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "BOARDSESH_USER",
+          "description": "Your Boardsesh display name or user id. No password needed.",
+          "isRequired": true,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "BOARDSESH_EMAIL",
+          "description": "Optional: Boardsesh account email, to unlock recommendations, search and the hold heatmap",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "BOARDSESH_PASSWORD",
+          "description": "Optional: Boardsesh account password, used once to obtain a token",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "BOARDSESH_TIMEZONE",
+          "description": "IANA timezone for grouping climbs into days (default: host timezone)",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string",
+          "placeholder": "Europe/Rome"
+        }
+      ]
+    }
+  ]
+}
